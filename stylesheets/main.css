@@ -1,0 +1,14 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  padding: 25px;
+}
+
+form {
+  border: 1px solid gray;
+  padding: 25px;
+  height: 25%;
+  width: 33%;
+}
