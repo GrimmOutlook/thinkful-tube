@@ -1,5 +1,5 @@
 var endpointURL = "https://www.googleapis.com/youtube/v3/search";
-var keyAPI = HIDDEN!!!!!!!
+var keyAPI = HIDDEN!!!!!!!!
 
 // Fxn to GET data from API
 function getDataFromAPI(searchTerm, callback){
@@ -23,7 +23,7 @@ function displayYouTubeData(data) {
   var resultElement = '';
   if (data.items) {
     data.items.forEach(function(thumb) {
-     resultElement += '<div class="thumb">' + '<a>' + thumb.snippet.thumbnails.medium.url + '</a>' + '</div>';
+     resultElement += '<div class="thumb">' + '<a ' + 'href="https://www.youtube.com/watch?v=' + thumb.id.videoId + '" target="_blank">' + '<img src="' + thumb.snippet.thumbnails.medium.url + '">' + '</a>' + '</div>';
     });
   }
   else {
