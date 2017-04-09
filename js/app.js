@@ -1,15 +1,17 @@
 var endpointURL = "https://www.googleapis.com/youtube/v3/search";
+var keyAPI = HIDDEN!!!!!!!
 
 // Fxn to GET data from API
 function getDataFromAPI(searchTerm, callback){
   var settings = {
-    url: OMDB_BASE_URL,
+    url: endpointURL,
     data: {
-      s: searchTerm,
-      r: 'json',
+      q: searchTerm,
+      key: keyAPI,
+      part: 'snippet'
     },
     dataType: 'json',
-    type: 'GET',
+    method: 'GET',
     success: callback
   };
   $.ajax(settings);
@@ -19,16 +21,16 @@ function getDataFromAPI(searchTerm, callback){
 // Callback Fxn that displays the data from API upon successful retrieval
 function displayYouTubeData(data) {
   var resultElement = '';
-  if (data.Search) {
-    data.Search.forEach(function(item) {
-     resultElement += '<p>' + item.Title + '</p>';
+  if (data.items) {
+    data.items.forEach(function(thumb) {
+     resultElement += '<div class="thumb">' + '<a>' + thumb.snippet.thumbnails.medium.url + '</a>' + '</div>';
     });
   }
   else {
     resultElement += '<p>No results</p>';
   }
 
-  $('.js-search-results').html(resultElement);
+  $('.js-thumbnails').html(resultElement);
 }
 
 
@@ -38,7 +40,7 @@ function watchSubmit() {
   $('.js-search-form').submit(function(e) {
     e.preventDefault();
     var query = $(this).find('.js-query').val();
-    getDataFromApi(query, displayYouTubeData);
+    getDataFromAPI(query, displayYouTubeData);
   });
 }
 
