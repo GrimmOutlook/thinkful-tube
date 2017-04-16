@@ -1,5 +1,5 @@
 var endpointURL = "https://www.googleapis.com/youtube/v3/search";
-var keyAPI = HIDDEN!!!!!!!!
+var keyAPI = "AIzaSyAncBniQgCj-nLAHLkTsjoqr0StEA7y2k0";
 
 // Fxn to GET data from API
 function getDataFromAPI(searchTerm, callback){
@@ -23,14 +23,14 @@ function displayYouTubeData(data) {
   var resultElement = '';
   if (data.items) {
     data.items.forEach(function(thumb) {
-     resultElement += '<div class="thumb">' + '<a ' + 'href="https://www.youtube.com/watch?v=' + thumb.id.videoId + '" target="_blank">' + '<img src="' + thumb.snippet.thumbnails.medium.url + '">' + '</a>' + '</div>';
+     resultElement += '<li class="thumbnail-items">' + '<a href="https://www.youtube.com/watch?v=' + thumb.id.videoId + '" target="_blank">' + '<img src="' + thumb.snippet.thumbnails.medium.url + '">' + '</a>' + '</li>';
     });
   }
   else {
     resultElement += '<p>No results</p>';
   }
 
-  $('.js-thumbnails').html(resultElement);
+  $('.thumbnail-grid').html(resultElement);
 }
 
 
