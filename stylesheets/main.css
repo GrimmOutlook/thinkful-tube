@@ -6,6 +6,7 @@ body {
 .thumbnail-grid {
   display: grid;
   grid-template-columns: 1fr;
+  /*grid-template-rows: 150px 1fr 1fr;*/
   grid-gap: 10px;
   background-color: #fff;
   color: #444;
@@ -31,7 +32,57 @@ body {
   background-color: #444;
   color: #fff;
   border-radius: 5px;
-  padding: 20px;
-  font-size: 150%;
+  padding: 5%;
+  /*font-size: 150%;*/
 }
+
+.thumbnail-items > caption {
+  font-size: 20px;
+  color: #fff;
+  padding: 5%;
+}
+
+.thumbnail-items > summary {
+  font-size: 18px;
+  color: #fff;
+  padding: 5%;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  /*margin: auto;*/
+}
+
+.thumbnail-grid > p {
+  margin-top: 30px;
+  font-size: 24px;
+  color: red;
+}
+
+.js-search-form > input {
+  margin: 20px 5px;
+  height: 35px;
+  width: 250px;
+  font-size: 24px;
+  border-radius: 5px;
+}
+
+.js-search-form > button {
+  height: 30px;
+  width: 80px;
+  font-size: 20px;
+  border-radius: 5px;
+}
+
+
+
+
+
+
+
+
+
+
+
 

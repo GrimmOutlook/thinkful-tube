@@ -21,16 +21,19 @@ function getDataFromAPI(searchTerm, callback){
 // Callback Fxn that displays the data from API upon successful retrieval
 function displayYouTubeData(data) {
   var resultElement = '';
-  if (data.items) {
+  if (data.items.length > 0) {
     data.items.forEach(function(thumb) {
-     resultElement += '<li class="thumbnail-items">' + '<a href="https://www.youtube.com/watch?v=' + thumb.id.videoId + '" target="_blank">' + '<img src="' + thumb.snippet.thumbnails.medium.url + '">' + '</a>' + '</li>';
+     resultElement += '<li class="thumbnail-items">' + '<a href="https://www.youtube.com/watch?v=' + thumb.id.videoId + '" target="_blank">' + '<img src="' + thumb.snippet.thumbnails.medium.url + '">' + '</a>' + '<caption>' + thumb.snippet.title + '</caption>' + '<summary>' + thumb.snippet.description + '</summary>' + '</li>';
     });
   }
   else {
-    resultElement += '<p>No results</p>';
+    resultElement += '<p>No results, please try again!</p>';
   }
 
+  console.log(resultElement);
+
   $('.thumbnail-grid').html(resultElement);
+  console.log(data.nextPageToken);
 }
 
 
