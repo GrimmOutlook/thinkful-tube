@@ -75,6 +75,17 @@ img {
   border-radius: 5px;
 }
 
+.next > a, .prev > a {
+  text-decoration: none;
+  height: 30px;
+  width: 80px;
+  font-size: 20px;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 10px;
+}
+
 
 
 
