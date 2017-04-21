@@ -49,7 +49,7 @@ body {
 }
 
 img {
-  max-width: 100%;
+  width: 100%;
   height: auto;
   /*margin: auto;*/
 }
@@ -80,6 +80,9 @@ img {
   height: 30px;
   width: 80px;
   font-size: 20px;
+}
+
+.next, .prev {
   border: 1px solid black;
   border-radius: 5px;
   padding: 5px;

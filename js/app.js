@@ -1,14 +1,21 @@
 var endpointURL = "https://www.googleapis.com/youtube/v3/search";
 var keyAPI = "AIzaSyAncBniQgCj-nLAHLkTsjoqr0StEA7y2k0";
 
+var state = {
+  nextPageToken: '',
+  prevPageToken: ''
+};
+
+
 // ----------------------  Initial retrieval & display fxns.  ------------------------
 
 // Fxn to GET data from API
-function getDataFromAPI(searchTerm, callback){
+function getDataFromAPI(searchTerm, callback, token){
   var settings = {
     url: endpointURL,
     data: {
       q: searchTerm,
+      pageToken: token,
       key: keyAPI,
       part: 'snippet'
     },
@@ -21,6 +28,7 @@ function getDataFromAPI(searchTerm, callback){
 
 // Callback Fxn that displays the data from API upon successful retrieval
 function displayYouTubeData(data){
+  debugger
   var resultElement = '';
   if (data.items.length > 0){
     data.items.forEach(function(thumb){
@@ -30,34 +38,20 @@ function displayYouTubeData(data){
   else {
     resultElement += '<p>No results, please try again!</p>';
   }
+
   $('.thumbnail-grid').html(resultElement);
-  console.log(data.nextPageToken);
-  var nextPage = '<a href="' + data.nextPageToken + '">Next 5 Results</a>';
-  $('.next').html(nextPage);
+  console.log(data.nextPageToken + ' displayYouTubeData fxn');
+  state.nextPageToken = data.nextPageToken
+
+    var nextPage = '<a class="next" href="#">Next 5 Results >></a>';
+  $('.next-page').html(nextPage);
+  next();
 }
 
-// ----------------------  Next Page retrieval & display fxns.  ------------------------
 
-// Fxn to GET Next Page data from API
-function getNextFromAPI(next, searchTerm, callback){
-  var settings = {
-    url: endpointURL,
-    data: {
-      pageToken: next,
-      q: searchTerm,
-      key: keyAPI,
-      part: 'snippet'
-    },
-    dataType: 'json',
-    method: 'GET',
-    success: callback
-  };
-  $.ajax(settings);
-}
+// --------------------------  Next Page Display Fxn.  ------------------------------
 
 function displayNext(data){
-  console.log(data.nextPageToken);
-  console.log(data.prevPageToken);
   $('.thumbnail-grid').hide();
   var resultElement = '';
   if (data.items.length > 0){
@@ -66,19 +60,52 @@ function displayNext(data){
     });
   }
   else {
-    resultElement += '<p>No results, please try again!</p>';
+    resultElement += '<p>No more results, try another search!</p>';
   }
+
   $('.thumbnail-grid').show();
   $('.thumbnail-grid').html(resultElement);
-  var prevPage = '<a href="' + data.prevPageToken + '"><< Previous 5 Results</a>';
-  var nextPage = '<a href="' + data.nextPageToken + '">Next 5 Results >></a>';
-  $('.prev').html(prevPage);
-  $('.next').html(nextPage);
+  state.prevPageToken = data.prevPageToken
+  state.nextPageToken = data.nextPageToken
+    var prevPage = '<a class="prev" href="#"><< Previous 5 Results</a>';
+    var nextPage = '<a class="next" href="#">Next 5 Results >></a>';
+  $('.previous-page').html(prevPage);
+  $('.next-page').html(nextPage);
+  next();
+  prev();
 }
 
 
+// ---------------------------  Prev Page Display Fxn.  -----------------------------
 
+function displayPrev(data){
+  $('.thumbnail-grid').hide();
+  var resultElement = '';
+  if (data.items.length > 0){
+    data.items.forEach(function(thumb){
+     resultElement += '<li class="thumbnail-items">' + '<a href="https://www.youtube.com/watch?v=' + thumb.id.videoId + '" target="_blank">' + '<img src="' + thumb.snippet.thumbnails.medium.url + '">' + '</a>' + '<caption>' + thumb.snippet.title + '</caption>' + '<summary>' + thumb.snippet.description + '</summary>' + '</li>';
+    });
+  }
+  else {
+    resultElement += '<p>No more results, try another search!</p>';
+  }
+
+  $('.thumbnail-grid').show();
+  $('.thumbnail-grid').html(resultElement);
+  state.prevPageToken = data.prevPageToken
+  state.nextPageToken = data.nextPageToken
+    var prevPage = '<a class="prev" href="#"><< Previous 5 Results</a>';
+    var nextPage = '<a class="next" href="#">Next 5 Results >></a>';
+  $('.previous-page').html(prevPage);
+  $('.next-page').html(nextPage);
+  next();
+  prev();
+}
+
+
+// ----------------------------  Event Lisener Fxns.  ------------------------------
 // Event Listener Fxn that, upon event trigger, calls the GET data fxn, passing in as arguments the user's input and the callback fxn.
+
 function watchSubmit(){
   $('.js-search-form').submit(function(e){
     e.preventDefault();
@@ -91,11 +118,25 @@ function next(){
   $('.next').click(function(e){
     e.preventDefault();
     var query = $('.js-search-form').find('.js-query').val();
-    var nextPage = 'CAUQAA';
-    getNextFromAPI(nextPage, query, displayNext);
+    var nextPage = state.nextPageToken;
+
+    getDataFromAPI(query, displayNext, nextPage);
+
   });
 }
 
-// Call the Event Listener Fxn???
+function prev(){
+  $('.prev').click(function(e){
+    e.preventDefault();
+    var query = $('.js-search-form').find('.js-query').val();
+    var prevPage = state.prevPageToken;
+
+    getDataFromAPI(query, displayPrev, prevPage);
+
+  });
+}
+
+// ------------------------  Call the Event Listener Fxns.  ---------------------------
+
 $(function(){watchSubmit();});
-$(function(){next();});
+
