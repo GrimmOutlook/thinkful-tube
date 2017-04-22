@@ -67,9 +67,16 @@ function displayNext(data){
   $('.thumbnail-grid').html(resultElement);
   state.prevPageToken = data.prevPageToken
   state.nextPageToken = data.nextPageToken
+
+  if (state.prevPageToken){
     var prevPage = '<a class="prev" href="#"><< Previous 5 Results</a>';
+    $('.previous-page').html(prevPage);
+  }
+  else {
+    $('.previous-page').hide();
+  }
+
     var nextPage = '<a class="next" href="#">Next 5 Results >></a>';
-  $('.previous-page').html(prevPage);
   $('.next-page').html(nextPage);
   next();
   prev();
@@ -94,18 +101,25 @@ function displayPrev(data){
   $('.thumbnail-grid').html(resultElement);
   state.prevPageToken = data.prevPageToken
   state.nextPageToken = data.nextPageToken
+
+  if (state.prevPageToken){
     var prevPage = '<a class="prev" href="#"><< Previous 5 Results</a>';
+    $('.previous-page').html(prevPage);
+  }
+  else {
+    $('.previous-page').hide();
+  }
+
     var nextPage = '<a class="next" href="#">Next 5 Results >></a>';
-  $('.previous-page').html(prevPage);
   $('.next-page').html(nextPage);
   next();
   prev();
 }
 
 
-// ----------------------------  Event Lisener Fxns.  ------------------------------
-// Event Listener Fxn that, upon event trigger, calls the GET data fxn, passing in as arguments the user's input and the callback fxn.
+// ----------------------------  Event Listener Fxns.  ------------------------------
 
+// Event Listener Fxn that, upon event trigger, calls the GET data fxn, passing in as arguments the user's input and the callback fxn.
 function watchSubmit(){
   $('.js-search-form').submit(function(e){
     e.preventDefault();
@@ -119,9 +133,7 @@ function next(){
     e.preventDefault();
     var query = $('.js-search-form').find('.js-query').val();
     var nextPage = state.nextPageToken;
-
     getDataFromAPI(query, displayNext, nextPage);
-
   });
 }
 
@@ -130,13 +142,11 @@ function prev(){
     e.preventDefault();
     var query = $('.js-search-form').find('.js-query').val();
     var prevPage = state.prevPageToken;
-
     getDataFromAPI(query, displayPrev, prevPage);
-
   });
 }
 
-// ------------------------  Call the Event Listener Fxns.  ---------------------------
+// ---------------------  Call the 1st Event Listener Fxn.  ---------------------------
 
 $(function(){watchSubmit();});
 
